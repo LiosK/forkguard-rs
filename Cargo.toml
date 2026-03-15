@@ -1,0 +1,14 @@
+[package]
+name = "forkguard"
+version = "0.1.0"
+authors = ["LiosK <contact@mail.liosk.net>"]
+license = "Apache-2.0"
+edition = "2024"
+rust-version = "1.85"
+description = "if guard.detected_fork() { ... }"
+repository = "https://github.com/LiosK/forkguard-rs"
+
+[package.metadata.docs.rs]
+# RUSTDOCFLAGS="--cfg docsrs" cargo +nightly doc --all-features --no-deps --open
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
