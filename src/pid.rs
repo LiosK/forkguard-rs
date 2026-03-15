@@ -1,4 +1,4 @@
-//! A fork guard implementation based on tracking the current process ID.
+//! A fork detector implementation based on tracking the current process ID.
 
 use std::process;
 

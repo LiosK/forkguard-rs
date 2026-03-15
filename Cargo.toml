@@ -8,6 +8,12 @@ rust-version = "1.85"
 description = "if guard.detected_fork() { ... }"
 repository = "https://github.com/LiosK/forkguard-rs"
 
+[features]
+atfork = ["dep:libc"]
+
+[dependencies]
+libc = { version = "0.2", optional = true }
+
 [package.metadata.docs.rs]
 # RUSTDOCFLAGS="--cfg docsrs" cargo +nightly doc --all-features --no-deps --open
 all-features = true
