@@ -4,38 +4,45 @@ use std::{error, fmt, num, sync, sync::atomic};
 
 static FORK_COUNT: atomic::AtomicUsize = atomic::AtomicUsize::new(0);
 
-/// A fork guard that detects whether the current process has been forked using `pthread_atfork()`.
+/// A fork guard that detects process forks using `pthread_atfork()`.
 ///
-/// This implementation reads a global counter that is incremented by a fork handler registered via
-/// `pthread_atfork()`. Each `Guard` instance tracks the last observed value of this counter.
+/// This implementation registers a fork handler that increments a global counter when a fork
+/// occurs. The guard detects a fork by checking if this counter has changed since the last call to
+/// [`detected_fork()`]. The fork handler is registered via `pthread_atfork()` only for the child
+/// process, so `detected_fork()` will return `true` only in the forked child, matching the
+/// behavior of [`pid::Guard`].
+///
+/// [`detected_fork()`]: Guard::detected_fork
+/// [`pid::Guard`]: crate::pid::Guard
 #[derive(Debug)]
 pub struct Guard {
     last_fork_count: usize,
 }
 
 impl Default for Guard {
-    /// Creates a new `Guard` initialized to the current fork count.
+    /// Creates a new `Guard` instance.
     ///
-    /// The first call to this method (or [`Guard::try_new`]) will register the global
-    /// `pthread_atfork()` handler.
+    /// The first call to this function (or [`Guard::try_new()`]) registers the fork handler via
+    /// `pthread_atfork()`.
     ///
     /// # Panics
     ///
-    /// Panics if `pthread_atfork` fails. Use [`Guard::try_new()`] for a non-panicking version.
+    /// Panics if `pthread_atfork()` fails, which is extremely unlikely under normal conditions.
     fn default() -> Self {
         Self::try_new().unwrap()
     }
 }
 
 impl Guard {
-    /// Creates a new `Guard` initialized to the current fork count.
+    /// Creates a new `Guard` instance.
     ///
-    /// This function registers a global `pthread_atfork()` handler on the first call.  The handler
-    /// increments a global counter in the child process immediately after a fork occurs.
+    /// The first call to this function (or [`Guard::default()`]) registers the fork handler via
+    /// `pthread_atfork()`.
     ///
     /// # Errors
     ///
-    /// Returns an [`AtforkError`] if the call to `pthread_atfork()` fails.
+    /// Returns an error if `pthread_atfork()` fails, which is extremely unlikely under normal
+    /// conditions.
     pub fn try_new() -> Result<Self, AtforkError> {
         static ATFORK_RESULT: sync::LazyLock<libc::c_int> =
             sync::LazyLock::new(|| unsafe { libc::pthread_atfork(None, None, Some(fork_handler)) });
@@ -51,11 +58,8 @@ impl Guard {
         }
     }
 
-    /// Returns `true` if a fork has been detected since the last check.
-    ///
-    /// This method compares the internal state of the guard with the global fork counter. If they
-    /// differ, it updates the internal state and returns `true`. Subsequent calls will return
-    /// `false` until another fork occurs.
+    /// Returns `true` in the child process if a fork has occurred since the last call to this
+    /// function. Otherwise, returns `false`.
     #[inline(always)]
     pub fn detected_fork(&mut self) -> bool {
         let current_fork_count = FORK_COUNT.load(atomic::Ordering::Relaxed);

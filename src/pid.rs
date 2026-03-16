@@ -1,11 +1,12 @@
-//! A fork detector implementation based on tracking the current process ID.
+//! A fork detector implementation based on the process ID.
 
 use std::process;
 
-/// A fork guard that detects process ID changes.
+/// A fork guard that detects process forks by tracking process ID changes.
 ///
-/// This implementation tracks the current process ID and returns `true` from [`detected_fork()`]
-/// if the process ID has changed since the last check.
+/// This implementation detects a fork by checking if the current process ID has changed since the
+/// last call to [`detected_fork()`]. Since only the child process receives a new process ID after
+/// a fork, `detected_fork()` will return `true` only in the child.
 ///
 /// [`detected_fork()`]: Guard::detected_fork
 #[derive(Debug)]
@@ -21,8 +22,8 @@ impl Default for Guard {
 }
 
 impl Guard {
-    /// Returns `true` if the current process ID has changed since the last call to this function.
-    /// Otherwise, returns `false`.
+    /// Returns `true` in the child process if a fork has occurred since the last call to this
+    /// function. Otherwise, returns `false`.
     #[inline(always)]
     pub fn detected_fork(&mut self) -> bool {
         let current_pid = process::id();
