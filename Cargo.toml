@@ -14,6 +14,9 @@ atfork = ["dep:libc"]
 [dependencies]
 libc = { version = "0.2", optional = true }
 
+[dev-dependencies]
+libc = "0.2"
+
 [package.metadata.docs.rs]
 # RUSTDOCFLAGS="--cfg docsrs" cargo +nightly doc --all-features --no-deps --open
 all-features = true
