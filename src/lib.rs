@@ -17,11 +17,10 @@
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
+#[cfg(all(unix, feature = "atfork"))]
+pub mod atfork;
 pub mod noop;
 pub mod pid;
-
-#[cfg(feature = "atfork")]
-pub mod atfork;
 
 #[cfg(not(unix))]
 pub use noop::Guard;
