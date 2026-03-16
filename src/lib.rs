@@ -1,10 +1,11 @@
 //! A lightweight crate for detecting process forks.
 //!
-//! This crate provides a `Guard` that can detect if the current process has been forked since the
-//! last check. This is useful for resetting state (like random number generators or connection
-//! pools) that should not be shared between a parent and its forked child.
+//! This crate provides a `Guard` that can detect if the current process has been
+//! forked since the last check. This is useful for resetting state (like random
+//! number generators or connection pools) that should not be shared between a
+//! parent and its forked child.
 //!
-//! # Example
+//! # Examples
 //!
 //! ```rust
 //! let mut guard = forkguard::new();
