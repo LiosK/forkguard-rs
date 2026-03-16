@@ -1,5 +1,7 @@
 //! A no-op fork detector implementation.
 
+use std::convert;
+
 /// A no-op fork guard.
 ///
 /// This implementation does nothing and always returns `false` from [`detected_fork()`]. It is
@@ -12,6 +14,11 @@ pub struct Guard {
 }
 
 impl Guard {
+    /// Creates a new `Guard` instance.
+    pub fn try_new() -> Result<Self, convert::Infallible> {
+        Ok(Default::default())
+    }
+
     /// Always returns `false`.
     #[inline(always)]
     pub fn detected_fork(&mut self) -> bool {

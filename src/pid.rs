@@ -1,6 +1,6 @@
 //! A fork detector implementation based on the process ID.
 
-use std::process;
+use std::{convert, process};
 
 /// A fork guard that detects process forks by tracking process ID changes.
 ///
@@ -22,6 +22,11 @@ impl Default for Guard {
 }
 
 impl Guard {
+    /// Creates a new `Guard` instance.
+    pub fn try_new() -> Result<Self, convert::Infallible> {
+        Ok(Default::default())
+    }
+
     /// Returns `true` in the child process if a fork has occurred since the last call to this
     /// function. Otherwise, returns `false`.
     #[inline(always)]
