@@ -1,7 +1,6 @@
-name: Rust
+name: cargo test
 
 on:
-  workflow_dispatch:
   push:
     branches: ["wf-test"]
 
@@ -15,8 +14,8 @@ jobs:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Run tests
+      - uses: actions/checkout@v6
+      - name: cargo test
         run: cargo test --verbose
-      - name: Run tests with atfork
+      - name: cargo test --features atfork
         run: cargo test --verbose --features atfork
