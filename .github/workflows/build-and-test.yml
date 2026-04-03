@@ -25,3 +25,5 @@ jobs:
         run: cargo build --verbose --all-features
       - name: Run tests - all features
         run: cargo test --verbose --all-features
+      - name: Run benches - all features
+        run: cargo +nightly bench --verbose --all-features
