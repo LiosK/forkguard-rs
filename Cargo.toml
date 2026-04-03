@@ -8,6 +8,7 @@ rust-version = "1.85"
 description = "if guard.detected_fork() { ... }"
 repository = "https://github.com/LiosK/forkguard-rs"
 documentation = "https://docs.rs/forkguard"
+exclude = ["/.github/"]
 
 [features]
 atfork = ["dep:libc"]
