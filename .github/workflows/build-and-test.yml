@@ -17,11 +17,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
-      - name: Build - default features
-        run: cargo build --verbose
-      - name: Run tests - default features
-        run: cargo test --verbose
-      - name: Build - all features
-        run: cargo build --verbose --all-features
-      - name: Run tests - all features
-        run: cargo test --verbose --all-features
+      - run: cargo build --verbose
+      - run: cargo build --verbose --all-features
+      - run: cargo test --verbose
+      - run: cargo test --verbose --all-features
+      - run: cargo +nightly bench --verbose --all-features
