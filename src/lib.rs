@@ -49,13 +49,18 @@ pub use atfork::Guard;
 
 /// Creates a new fork `Guard` instance.
 ///
-/// The behavior of the returned `Guard` depends on the platform and enabled features:
+/// The actual type of the returned `Guard` depends on the platform and enabled features:
 ///
 /// - Unix with `atfork` feature: Returns [`atfork::Guard`], which uses `pthread_atfork()` to
 ///   detect forks.
 /// - Unix without `atfork` feature: Returns [`pid::Guard`], which tracks changes in the process
 ///   ID.
 /// - Non-Unix platforms: Returns [`noop::Guard`], which never detects a fork.
+///
+/// # Panics
+///
+/// Panics if `atfork::Guard` cannot be created due to `pthread_atfork()` failure, which is
+/// extremely unlikely under normal conditions. `pid::Guard` or `noop::Guard` never panic.
 pub fn new() -> Guard {
     Guard::default()
 }
