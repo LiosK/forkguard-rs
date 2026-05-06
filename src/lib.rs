@@ -61,6 +61,7 @@ pub use atfork::Guard;
 ///
 /// Panics if `atfork::Guard` cannot be created due to `pthread_atfork()` failure, which is
 /// extremely unlikely under normal conditions. `pid::Guard` or `noop::Guard` never panic.
+#[track_caller]
 pub fn new() -> Guard {
     Guard::default()
 }

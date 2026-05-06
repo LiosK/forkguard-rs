@@ -28,6 +28,7 @@ impl Default for Guard {
     /// # Panics
     ///
     /// Panics if `pthread_atfork()` fails, which is extremely unlikely under normal conditions.
+    #[track_caller]
     fn default() -> Self {
         Self::try_new().unwrap()
     }
