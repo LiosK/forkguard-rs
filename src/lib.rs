@@ -71,9 +71,13 @@ pub fn new() -> Guard {
 /// An enumeration of the different fork detection flavors provided by this crate.
 #[derive(Debug)]
 #[non_exhaustive]
-enum Flavor {
-    #[allow(dead_code)]
+pub enum Flavor {
+    /// Indicates [`atfork::Guard`].
     Atfork,
+
+    /// Indicates [`pid::Guard`].
     Pid,
+
+    /// Indicates [`noop::Guard`].
     Noop,
 }

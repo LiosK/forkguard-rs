@@ -34,9 +34,7 @@ impl Guard {
     }
 
     /// Returns the flavor of this guard.
-    ///
-    /// This method is intended for diagnostic purposes only.
-    fn flavor(&self) -> impl fmt::Debug {
+    pub fn flavor(&self) -> crate::Flavor {
         crate::Flavor::Noop
     }
 }
