@@ -27,6 +27,8 @@
 //! - [`noop::Guard`] (Non-Unix): Provides a no-op implementation that always returns
 //!   `false`, used on platforms where fork detection is not required.
 //!
+//! The top-level `forkguard::Guard` resolves to the active flavor.
+//!
 //! # Crate features
 //!
 //! - `atfork` (optional): See the above description.
