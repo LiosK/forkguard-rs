@@ -2,6 +2,8 @@
 
 use std::{convert, fmt};
 
+use crate::Flavor;
+
 /// A no-op fork guard.
 ///
 /// This implementation does nothing and always returns `false` from [`detected_fork()`]. It is
@@ -22,6 +24,9 @@ impl fmt::Debug for Guard {
 }
 
 impl Guard {
+    /// The flavor of this guard type.
+    pub const FLAVOR: Flavor = Flavor::Noop;
+
     /// Creates a new `Guard` instance.
     pub fn try_new() -> Result<Self, convert::Infallible> {
         Ok(Default::default())
@@ -33,8 +38,8 @@ impl Guard {
         false
     }
 
-    /// Returns the flavor of this guard.
-    pub fn flavor(&self) -> crate::Flavor {
-        crate::Flavor::Noop
+    /// Returns the flavor of this guard instance.
+    pub fn flavor(&self) -> Flavor {
+        Self::FLAVOR.clone()
     }
 }

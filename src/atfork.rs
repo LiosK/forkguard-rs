@@ -2,6 +2,8 @@
 
 use std::{error, fmt, num, sync, sync::atomic};
 
+use crate::Flavor;
+
 static FORK_COUNT: atomic::AtomicUsize = atomic::AtomicUsize::new(0);
 
 /// A fork guard that detects process forks using `pthread_atfork()`.
@@ -43,6 +45,9 @@ impl Default for Guard {
 }
 
 impl Guard {
+    /// The flavor of this guard type.
+    pub const FLAVOR: Flavor = Flavor::Atfork;
+
     /// Creates a new `Guard` instance.
     ///
     /// The first call to this function (or [`Guard::default()`]) registers the fork handler via
@@ -85,9 +90,9 @@ impl Guard {
         self.last_fork_count = value;
     }
 
-    /// Returns the flavor of this guard.
-    pub fn flavor(&self) -> crate::Flavor {
-        crate::Flavor::Atfork
+    /// Returns the flavor of this guard instance.
+    pub fn flavor(&self) -> Flavor {
+        Self::FLAVOR.clone()
     }
 }
 

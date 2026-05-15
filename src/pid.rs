@@ -2,6 +2,8 @@
 
 use std::{convert, fmt, process};
 
+use crate::Flavor;
+
 /// A fork guard that detects process forks by tracking process ID changes.
 ///
 /// This implementation detects a fork by checking if the current process ID has changed since the
@@ -30,6 +32,9 @@ impl Default for Guard {
 }
 
 impl Guard {
+    /// The flavor of this guard type.
+    pub const FLAVOR: Flavor = Flavor::Pid;
+
     /// Creates a new `Guard` instance.
     pub fn try_new() -> Result<Self, convert::Infallible> {
         Ok(Default::default())
@@ -53,8 +58,8 @@ impl Guard {
         self.last_pid = value;
     }
 
-    /// Returns the flavor of this guard.
-    pub fn flavor(&self) -> crate::Flavor {
-        crate::Flavor::Pid
+    /// Returns the flavor of this guard instance.
+    pub fn flavor(&self) -> Flavor {
+        Self::FLAVOR.clone()
     }
 }
