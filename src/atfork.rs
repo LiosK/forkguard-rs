@@ -14,9 +14,17 @@ static FORK_COUNT: atomic::AtomicUsize = atomic::AtomicUsize::new(0);
 ///
 /// [`detected_fork()`]: Guard::detected_fork
 /// [`pid::Guard`]: crate::pid::Guard
-#[derive(Debug)]
 pub struct Guard {
     last_fork_count: usize,
+}
+
+impl fmt::Debug for Guard {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+        f.debug_struct("Guard")
+            .field("flavor()", &self.flavor())
+            .field("last_fork_count", &self.last_fork_count)
+            .finish()
+    }
 }
 
 impl Default for Guard {
@@ -75,6 +83,13 @@ impl Guard {
     #[cold]
     fn set_fork_count(&mut self, value: usize) {
         self.last_fork_count = value;
+    }
+
+    /// Returns the flavor of this guard.
+    ///
+    /// This method is intended for diagnostic purposes only.
+    fn flavor(&self) -> impl fmt::Debug {
+        crate::Flavor::Atfork
     }
 }
 

@@ -1,6 +1,6 @@
 //! A fork detector implementation based on the process ID.
 
-use std::{convert, process};
+use std::{convert, fmt, process};
 
 /// A fork guard that detects process forks by tracking process ID changes.
 ///
@@ -9,9 +9,17 @@ use std::{convert, process};
 /// a fork, `detected_fork()` will return `true` only in the child.
 ///
 /// [`detected_fork()`]: Guard::detected_fork
-#[derive(Debug)]
 pub struct Guard {
     last_pid: u32,
+}
+
+impl fmt::Debug for Guard {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+        f.debug_struct("Guard")
+            .field("flavor()", &self.flavor())
+            .field("last_pid", &self.last_pid)
+            .finish()
+    }
 }
 
 impl Default for Guard {
@@ -43,5 +51,12 @@ impl Guard {
     #[cold]
     fn set_pid(&mut self, value: u32) {
         self.last_pid = value;
+    }
+
+    /// Returns the flavor of this guard.
+    ///
+    /// This method is intended for diagnostic purposes only.
+    fn flavor(&self) -> impl fmt::Debug {
+        crate::Flavor::Pid
     }
 }

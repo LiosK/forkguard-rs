@@ -65,3 +65,13 @@ pub use atfork::Guard;
 pub fn new() -> Guard {
     Guard::default()
 }
+
+/// An enumeration of the different fork detection flavors provided by this crate.
+#[derive(Debug)]
+#[non_exhaustive]
+enum Flavor {
+    #[allow(dead_code)]
+    Atfork,
+    Pid,
+    Noop,
+}
