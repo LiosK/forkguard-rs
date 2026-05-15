@@ -32,6 +32,28 @@
 //! # Crate features
 //!
 //! - `atfork` (optional): See the above description.
+//!
+//! This crate lets downstream users opt-in to the `atfork` feature even when the
+//! intermediate dependencies do not. To do this, add the following to your
+//! `Cargo.toml` no matter if your crate uses `forkguard` directly:
+//!
+//! ```toml
+//! [dependencies]
+//! forkguard = { version = "0.1", features = ["atfork"] }
+//! ```
+//!
+//! Alternatively, add the following to `Cargo.toml`:
+//!
+//! ```toml
+//! [dependencies]
+//! forkguard = "0.1"
+//! ```
+//!
+//! And then enable the feature in your build command:
+//!
+//! ```bash
+//! cargo build --features forkguard/atfork
+//! ```
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
