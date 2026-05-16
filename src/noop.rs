@@ -10,7 +10,7 @@ use crate::Flavor;
 /// typically used on platforms where fork detection is either not supported or not required.
 ///
 /// [`detected_fork()`]: Guard::detected_fork
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct Guard {
     _private: (),
 }

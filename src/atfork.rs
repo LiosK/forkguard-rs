@@ -16,6 +16,7 @@ static FORK_COUNT: atomic::AtomicUsize = atomic::AtomicUsize::new(0);
 ///
 /// [`detected_fork()`]: Guard::detected_fork
 /// [`pid::Guard`]: crate::pid::Guard
+#[derive(Clone)]
 pub struct Guard {
     last_fork_count: usize,
 }

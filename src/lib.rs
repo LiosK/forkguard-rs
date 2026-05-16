@@ -125,6 +125,7 @@ mod tests {
         let mut guard = Guard::default();
         let _ = guard.detected_fork();
         let _ = guard.flavor();
+        let _ = guard.clone();
 
         fn assert_traits<T: Send + Sync + Unpin>() {}
         assert_traits::<Guard>();

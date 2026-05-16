@@ -11,6 +11,7 @@ use crate::Flavor;
 /// a fork, `detected_fork()` will return `true` only in the child.
 ///
 /// [`detected_fork()`]: Guard::detected_fork
+#[derive(Clone)]
 pub struct Guard {
     last_pid: u32,
 }
