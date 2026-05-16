@@ -100,26 +100,6 @@ pub fn new() -> Guard {
     Guard::default()
 }
 
-/// A non-panicking variant of [`new()`].
-///
-/// # Errors
-///
-/// Returns an error if [`atfork::Guard`] cannot be created due to `pthread_atfork()` failure, which
-/// is extremely unlikely under normal conditions. [`pid::Guard`] or [`noop::Guard`] never panics.
-///
-/// # Examples
-///
-/// ```rust
-/// let mut guard = forkguard::try_new().expect("failed to create fork guard");
-///
-/// if guard.detected_fork() {
-///     // Handle the fork (e.g., re-initialize state)
-/// }
-/// ```
-pub fn try_new() -> Result<Guard, impl std::error::Error> {
-    Guard::try_new()
-}
-
 /// An enumeration of the different fork detection flavors provided by this crate.
 #[derive(Debug, Clone, Eq, PartialEq, Hash)]
 #[non_exhaustive]
@@ -169,6 +149,5 @@ mod tests {
         assert_eq!(Guard::FLAVOR, Flavor::Atfork);
 
         assert_eq!(new().flavor(), Guard::FLAVOR);
-        assert_eq!(try_new().unwrap().flavor(), Guard::FLAVOR);
     }
 }
