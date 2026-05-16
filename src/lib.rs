@@ -84,10 +84,20 @@ pub use atfork::Guard;
 /// # Panics
 ///
 /// Panics if `atfork::Guard` cannot be created due to `pthread_atfork()` failure, which is
-/// extremely unlikely under normal conditions. `pid::Guard` or `noop::Guard` never panic.
+/// extremely unlikely under normal conditions. `pid::Guard` or `noop::Guard` never panics.
 #[track_caller]
 pub fn new() -> Guard {
     Guard::default()
+}
+
+/// A non-panicking variant of [`new()`].
+///
+/// # Errors
+///
+/// Returns an error if [`atfork::Guard`] cannot be created due to `pthread_atfork()` failure, which
+/// is extremely unlikely under normal conditions. [`pid::Guard`] or [`noop::Guard`] never panics.
+pub fn try_new() -> Result<Guard, impl std::error::Error> {
+    Guard::try_new()
 }
 
 /// An enumeration of the different fork detection flavors provided by this crate.
