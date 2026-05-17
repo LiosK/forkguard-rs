@@ -120,14 +120,17 @@ mod tests {
 
     #[test]
     fn guard_has_common_interface() {
-        let _ = Guard::FLAVOR;
-        let _ = Guard::try_new();
-        let mut guard = Guard::default();
-        let _ = guard.detected_fork();
-        let _ = guard.flavor();
-        let _ = guard.clone();
+        use std::{error, fmt};
 
-        fn assert_traits<T: Send + Sync + Unpin>() {}
+        let _: Flavor = Guard::FLAVOR;
+        let mut guard = Guard::default();
+        let _: Flavor = guard.flavor();
+        let _: bool = guard.detected_fork();
+
+        fn test_try_new(_: Result<Guard, impl error::Error>) {}
+        test_try_new(Guard::try_new());
+
+        fn assert_traits<T: fmt::Debug + Clone + Default + Send + Sync + Unpin>() {}
         assert_traits::<Guard>();
     }
 
